@@ -4,8 +4,10 @@ import org.scalatest._
 
 class BookBotSpec extends FunSpec with Matchers {
   describe("BookBot") {
-    it("says hello") {
-      assert(BookBot.greeting === "hello")
+    describe("getBook") {
+      it("gets a response from the api") {
+        assert(BookBot.getBook("harry potter").isInstanceOf[String])
+      }
     }
   }
 }
