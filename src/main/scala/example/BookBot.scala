@@ -10,10 +10,24 @@ object BookBot extends App {
   }
 
   def getBook(title: String): String = {
-    val response: HttpResponse[String]= Http("https://www.googleapis.com/books/v1/volumes")
+    val response: HttpResponse[String] = Http("https://www.googleapis.com/books/v1/volumes")
       .param("key", sys.env("GOOGLE_API_KEY"))
       .param("q", s"intitle:${title}")
       .asString
     response.body
   }
 }
+
+
+object Book {
+  def isbn(book: Book): Decoder.Result[String] = {
+    val cursor = book.json.hcursor
+    cursor
+      .downField("volumeInfo")
+      .downField("industryIdentifiers")
+      .downArray
+      .get[String]("identifier")
+  }
+}
+
+case class Book(json: Json)
