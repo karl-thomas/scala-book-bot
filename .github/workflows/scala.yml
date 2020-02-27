@@ -13,6 +13,6 @@ jobs:
         with:
           java-version: 1.8
         env:
-          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          GOOGLE_API_KEY: ${{secrets.GOOGLE_API_KEY}}
       - name: Run tests
         run: sbt test
