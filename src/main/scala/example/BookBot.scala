@@ -2,6 +2,7 @@ package example
 
 import scalaj.http._
 import io.circe._, io.circe.parser._
+import example.Book
 
 object BookBot extends App {
   def parseJson(json: String): Json = {
@@ -16,17 +17,3 @@ object BookBot extends App {
     response.body
   }
 }
-
-
-object Book {
-  def isbn(book: Book): Decoder.Result[String] = {
-    val cursor = book.json.hcursor
-    cursor
-      .downField("volumeInfo")
-      .downField("industryIdentifiers")
-      .downArray
-      .get[String]("identifier")
-  }
-}
-
-case class Book(json: Json)
