@@ -29,8 +29,17 @@ class BookBotSpec extends FunSpec with Matchers {
 
   describe("BookBot") {
     describe("getBook") {
-      it("gets a response from the api") {
-        assert(BookBot.getBook("harry potter").isInstanceOf[String])
+      describe("when the inner request returns a 200") {
+        it("returns the response body") {
+          assert(BookBot.getBook("harry potter").getOrElse("") contains "Harry")
+        }
+      }
+
+      describe("when the request fails") {
+        // need to figure out http mocking
+        ignore("returns an HttpFailure") {
+
+        }
       }
     }
 
