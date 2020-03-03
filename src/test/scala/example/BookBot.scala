@@ -1,31 +1,20 @@
 package example
 
 import org.scalatest._
-import io.circe._, io.circe.parser._
+import io.circe._, io.circe.parser._, io.circe.generic.auto._, io.circe.syntax._
 
 class BookBotSpec extends FunSpec with Matchers {
   val isbn10: String = "0545790352"
   val isbn13: String = "0545790352123"
-  val jsonString: String = raw"""
-    {
-      "volumeInfo": {
-        "title": "Harry Potter and the Sorcerer's Stone",
-        "authors": [
-          "J. K. Rowling"
-        ],
-        "industryIdentifiers": [
-          {
-            "type": "ISBN_10",
-            "identifier": "$isbn10"
-          },
-          {
-            "type": "ISBN_13",
-            "identifier": "$isbn13"
-          }
-        ]
-      }
-    }
-  """
+    val industryIdentifiers = List(
+    IndustryIdentifier("ISBN_10", isbn10),
+    IndustryIdentifier("ISBN_13", isbn13)
+  )
+  val book = Map(
+    "volumeInfo" -> VolumeInfo("Harry Potter and the Sorcerer's Stone", List("J. K. Rowling"), industryIdentifiers)
+  )
+
+  val json = book.asJson
 
   describe("BookBot") {
     describe("getBook") {
@@ -43,9 +32,10 @@ class BookBotSpec extends FunSpec with Matchers {
       }
     }
 
+
     describe("parseJson") {
       it("returns a map of the json string pass to it") {
-        assert(BookBot.parseJson(jsonString).isInstanceOf[Json])
+        assert(BookBot.parseJson(json.toString).isInstanceOf[Json])
       }
     }
   }

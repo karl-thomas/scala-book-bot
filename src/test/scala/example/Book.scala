@@ -1,39 +1,25 @@
 package example
 
 import org.scalatest._
-import io.circe._, io.circe.parser._
+import io.circe._, io.circe.parser._, io.circe.generic.auto._, io.circe.syntax._
 
 import example.Book
 
 class BookSpec extends FunSpec with Matchers {
   val isbn10: String = "0545790352"
   val isbn13: String = "0545790352123"
-  val jsonString: String = raw"""
-    {
-      "volumeInfo": {
-        "title": "Harry Potter and the Sorcerer's Stone",
-        "authors": [
-          "J. K. Rowling"
-        ],
-        "industryIdentifiers": [
-          {
-            "type": "ISBN_10",
-            "identifier": "$isbn10"
-          },
-          {
-            "type": "ISBN_13",
-            "identifier": "$isbn13"
-          }
-        ]
-      }
-    }
-  """
-
+  val industryIdentifiers = List(
+    IndustryIdentifier("ISBN_10", isbn10),
+    IndustryIdentifier("ISBN_13", isbn13)
+  )
+  val book = Volume(
+    VolumeInfo("Harry Potter and the Sorcerer's Stone", List("J. K. Rowling"), industryIdentifiers)
+  )
+  val json = book.asJson
+  
   describe("Book") {
     it ("can give you the isbn of the google specific Json object passed to it") {
-      val obj = parse(jsonString).getOrElse(Json.Null)
-      val book = Book(obj)
-
+      val book = Book(json)
       assert(book.isbn contains isbn10)
     }
 
