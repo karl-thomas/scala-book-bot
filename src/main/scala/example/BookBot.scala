@@ -8,8 +8,8 @@ case class HttpFailure(message: String)
 
 object BookBot extends App {
 
-  def parseJson(json: String): Json = {
-    parse(json).getOrElse(Json.Null)
+  def parseJson(json: String): Either[io.circe.Error, GoogleResponse]= {
+    decode[GoogleResponse](json)
   }
 
   def getBook(title: String): Either[HttpFailure, String] = {
