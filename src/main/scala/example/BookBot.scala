@@ -1,5 +1,6 @@
 package example
 
+import scala.util.{Try, Success, Failure}
 import scalaj.http._
 import io.circe._, io.circe.parser._
 import example.Book
@@ -17,6 +18,13 @@ object BookBot extends App {
       case List() => Left(TransformError("No books found in search results"))
       case List(volume) => Right(volume)
     }
+
+  def createBook(vol: Volume): Either[TransformError, Book] = {
+    Try(vol.volumeInfo.industryIdentifiers.head.identifier) match {
+      case Success(value) => Right(Book(value))
+      case Failure(_) => Left(TransformError("No ISBN in response"))
+    }
+  }
 
   def getBook(title: String): Either[HttpError, String] = {
     val response: HttpResponse[String] = Http("https://www.googleapis.com/books/v1/volumes")
