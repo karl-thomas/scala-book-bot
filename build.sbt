@@ -5,7 +5,7 @@ ThisBuild / version          := "0.1.0-SNAPSHOT"
 ThisBuild / organization     := "com.example"
 ThisBuild / organizationName := "example"
 
-val circeVersion = "0.12.3"
+val circeVersion = "0.13.0"
 
 lazy val root = (project in file("."))
   .settings(
