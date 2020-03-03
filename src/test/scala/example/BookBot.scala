@@ -13,8 +13,9 @@ class BookBotSpec extends FunSpec with Matchers {
   val book = Volume(VolumeInfo("Harry Potter and the Sorcerer's Stone", List("J. K. Rowling"), industryIdentifiers))
   val bookJson = book.asJson
   val bookJsonString = bookJson.toString
-  val googleResponse = GoogleResponse(List(book)).asJson
-  val googleResponseString = googleResponse.toString
+  val googleResponse = GoogleResponse(List(book))
+  val googleResponseJson = googleResponse.asJson
+  val googleResponseString = googleResponseJson.toString
   
 
   describe("BookBot") {
@@ -38,11 +39,22 @@ class BookBotSpec extends FunSpec with Matchers {
       it("decodes a json string into a GoogleResponse instance") {
         val result = BookBot.parseJson(googleResponseString)
 
-        result.map((response) => assert(response.items.head equals book))
+        result.map(response => assert(response.items.head equals book))
       }
 
       it("should handle if json object does not contain a Google response") {
         assert(BookBot.parseJson(bookJsonString).isLeft)
+      }
+    }
+
+    describe("takeFirstBook") {
+      it("should return the first book in a parsed api response") {
+        assert(BookBot.takeFirstBook(googleResponse) contains book)
+      }
+
+      it("should handle if there is no first book") {
+        val empty = GoogleResponse(List())
+        assert(BookBot.takeFirstBook(empty).isLeft)
       }
     }
   }

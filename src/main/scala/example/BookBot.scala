@@ -4,7 +4,8 @@ import scalaj.http._
 import io.circe._, io.circe.parser._
 import example.Book
 
-case class HttpFailure(message: String)
+case class TransformError(message: String)
+case class HttpError(message: String)
 
 object BookBot extends App {
 
@@ -12,7 +13,13 @@ object BookBot extends App {
     decode[GoogleResponse](json)
   }
 
-  def getBook(title: String): Either[HttpFailure, String] = {
+  def takeFirstBook(response: GoogleResponse): Either[TransformError, Volume] =
+    response.items.take(1) match {
+      case List() => Left(TransformError("No books found in search results"))
+      case List(volume) => Right(volume)
+    }
+
+  def getBook(title: String): Either[HttpError, String] = {
     val response: HttpResponse[String] = Http("https://www.googleapis.com/books/v1/volumes")
       .param("key", sys.env.getOrElse("GOOGLE_API_KEY", ""))
       .param("q", s"intitle:${title}")
