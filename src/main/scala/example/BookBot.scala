@@ -9,9 +9,8 @@ case class HttpError(message: String)
 
 object BookBot extends App {
 
-  def parseJson(json: String): Either[io.circe.Error, GoogleResponse]= {
+  def parseJson(json: String): Either[io.circe.Error, GoogleResponse] = 
     decode[GoogleResponse](json)
-  }
 
   def takeFirstBook(response: GoogleResponse): Either[TransformError, Volume] =
     response.items.take(1) match {
@@ -25,10 +24,9 @@ object BookBot extends App {
       .param("q", s"intitle:${title}")
       .asString
 
-    val code = response.code
     response.code match {
       case 200 => Right(response.body)
-      case _ => Left(HttpFailure(s"request failed with a $code error code"))
+      case code => Left(HttpError(s"Search request failed with a $code error code"))
     }
   }
 }
