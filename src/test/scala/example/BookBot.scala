@@ -57,17 +57,6 @@ class BookBotSpec extends FunSpec with Matchers {
         assert(BookBot.takeFirstBook(empty).isLeft)
       }
     }
-
-    describe("createBook") {
-      it("should return a new instance of a book given a volume") {
-        assert(BookBot.createBook(book) contains Book(isbn10))
-      }
-
-      it("should handle if json object does not container identifier node") {
-        val empty = Volume(VolumeInfo("Harry Potter and the Sorcerer's Stone", List("J. K. Rowling"), List()))
-        assert(BookBot.createBook(empty).isLeft)
-      }
-    }
   }
 }
 
