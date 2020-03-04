@@ -10,6 +10,7 @@ val circeVersion = "0.13.0"
 lazy val root = (project in file("."))
   .settings(
     name := "scala-book-bot",
+    libraryDependencies += "org.scalamock" %% "scalamock" % "4.4.0" % Test,
     libraryDependencies += scalaTest % Test,
     libraryDependencies +=  "org.scalaj" %% "scalaj-http" % "2.4.2",
     libraryDependencies ++= Seq(

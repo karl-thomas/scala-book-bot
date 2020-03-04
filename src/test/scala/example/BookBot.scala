@@ -35,6 +35,13 @@ class BookBotSpec extends FunSpec with Matchers {
       }
     }
 
+
+    describe("handleCommand") {
+      it("prints each string in the array passed to it") {
+        
+      }
+    }
+
     describe("parseJson") {
       it("decodes a json string into a GoogleResponse instance") {
         val result = BookBot.parseJson(googleResponseString)

@@ -9,6 +9,12 @@ case class HttpError(message: String)
 
 object BookBot extends App {
 
+  handleCommand(args)
+
+  def handleCommand(args: Array[String]) {
+    args.foreach(Console.print)
+  }
+
   def parseJson(json: String): Either[io.circe.Error, GoogleResponse] = 
     decode[GoogleResponse](json)
 
@@ -28,5 +34,11 @@ object BookBot extends App {
       case 200 => Right(response.body)
       case code => Left(HttpError(s"Search request failed with a $code error code"))
     }
+  }
+}
+
+object Console {
+  def print(message: String) = {
+    println(message)
   }
 }
