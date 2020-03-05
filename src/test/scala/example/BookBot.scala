@@ -4,13 +4,14 @@ import org.scalatest._
 import io.circe._, io.circe.parser._, io.circe.generic.auto._, io.circe.syntax._
 
 class BookBotSpec extends FunSpec with Matchers {
+  val title: String = "Harry Potter and the Sorcerer's Stone"
   val isbn10: String = "0545790352"
   val isbn13: String = "0545790352123"
     val industryIdentifiers = List(
     IndustryIdentifier("ISBN_10", isbn10),
     IndustryIdentifier("ISBN_13", isbn13)
   )
-  val book = Volume(VolumeInfo("Harry Potter and the Sorcerer's Stone", List("J. K. Rowling"), industryIdentifiers))
+  val book = Volume(VolumeInfo(industryIdentifiers))
   val bookJson = book.asJson
   val bookJsonString = bookJson.toString
   val googleResponse = GoogleResponse(List(book))
@@ -35,10 +36,9 @@ class BookBotSpec extends FunSpec with Matchers {
       }
     }
 
-
-    describe("handleCommand") {
-      it("prints each string in the array passed to it") {
-        
+    describe("getISBN") {
+      it ("returns the isbn for a book title") {
+        assert(BookBot.getISBN(title).getOrElse("") equals isbn10)
       }
     }
 

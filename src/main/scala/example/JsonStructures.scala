@@ -7,7 +7,7 @@ object Volume {
   implicit val encoder: Encoder[Volume] = deriveEncoder[Volume]
 }
 
-case class VolumeInfo(title: String, authors: List[String], industryIdentifiers: List[IndustryIdentifier])
+case class VolumeInfo(industryIdentifiers: List[IndustryIdentifier])
 object VolumeInfo {
   implicit val decoder: Decoder[VolumeInfo] = deriveDecoder[VolumeInfo]
   implicit val encoder: Encoder[VolumeInfo] = deriveEncoder[VolumeInfo]
@@ -20,7 +20,6 @@ object IndustryIdentifier {
 }
 
 case class GoogleResponse(items: List[Volume])
-
 object GoogleResponse {
   implicit val decoder: Decoder[GoogleResponse] = deriveDecoder[GoogleResponse]
   implicit val encoder: Encoder[GoogleResponse] = deriveEncoder[GoogleResponse]
