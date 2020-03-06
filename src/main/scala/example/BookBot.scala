@@ -10,19 +10,17 @@ object BookBot extends App {
     case Right(value) => Console.print(value)
   }
 
-  def getISBN(title: String): Either[Error, String] = {
+  def getISBN(title: String): Either[Error, String] =
     getBook(title)
       .flatMap(parseJson)
       .flatMap(takeFirstBook)
       .flatMap(Book.fromVolume)
       .map(_.isbn)
-  }
 
   def parseJson(json: String): Either[Error, GoogleResponse] = 
-    decode[GoogleResponse](json) match {
-      case Left(_: io.circe.Error) => Left(TransformError("Could not parse json"))
-      case Right(value: GoogleResponse) => Right(value)
-    }
+    decode[GoogleResponse](json)
+      .left.map(_ => TransformError("Could not parse json"))
+
 
   def takeFirstBook(response: GoogleResponse): Either[TransformError, Volume] =
     response.items.take(1) match {
