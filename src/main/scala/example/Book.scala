@@ -10,8 +10,8 @@ object Book {
     Some(vol)
       .map(_.volumeInfo)
       .map(_.industryIdentifiers)
-      .flatMap(_.lift(0))
+      .flatMap(option => option.getOrElse(List()).lift(0))
       .map(_.identifier)
-      .map(isbn => Book(isbn))
+      .map(Book.apply)
       .toRight(TransformError("No ISBN in response"))
 }

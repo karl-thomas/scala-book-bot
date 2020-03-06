@@ -7,7 +7,7 @@ object Volume {
   implicit val encoder: Encoder[Volume] = deriveEncoder[Volume]
 }
 
-case class VolumeInfo(industryIdentifiers: List[IndustryIdentifier])
+case class VolumeInfo(industryIdentifiers: Option[List[IndustryIdentifier]])
 object VolumeInfo {
   implicit val decoder: Decoder[VolumeInfo] = deriveDecoder[VolumeInfo]
   implicit val encoder: Encoder[VolumeInfo] = deriveEncoder[VolumeInfo]
