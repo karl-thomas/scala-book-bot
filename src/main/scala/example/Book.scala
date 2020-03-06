@@ -10,8 +10,7 @@ object Book {
       .map(_.volumeInfo)
       .map(_.industryIdentifiers)
       .flatMap(_.lift(0))
-      .map(_.identifier) match {
-        case Some(value) => Right(Book(value))
-        case None => Left(TransformError("No ISBN in response"))
-      }
+      .map(_.identifier)
+      .map(isbn => Book(isbn))
+      .toRight(TransformError("No ISBN in response"))
 }
