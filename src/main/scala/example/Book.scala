@@ -2,6 +2,7 @@ package example
 
 import io.circe._, io.circe.parser._
 import scala.util.{Try, Success, Failure}
+import example.models.errors.{TransformError}
 
 case class Book(isbn: String)
 object Book {

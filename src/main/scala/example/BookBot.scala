@@ -2,17 +2,20 @@ package example
 
 import scalaj.http._
 import io.circe._, io.circe.parser._
-import example.Book
-
-case class TransformError(message: String)
-case class HttpError(message: String)
+import example.models.errors.{Error, HttpError, TransformError}
 
 object BookBot extends App {
+  getISBN("Harry Potter") match {
+    case Left(error) => Console.print(error.getMessage)
+    case Right(value) => Console.print(value)
+  }
 
-  handleCommand(args)
-
-  def handleCommand(args: Array[String]) {
-    args.foreach(Console.print)
+  def getISBN(title: String): Either[Error, String] = {
+    getBook(title)
+      .flatMap(parseJson)
+      .flatMap(takeFirstBook)
+      .flatMap(Book.fromVolume)
+      .map(_.isbn)
   }
 
   def parseJson(json: String): Either[Error, GoogleResponse] = 
@@ -41,7 +44,7 @@ object BookBot extends App {
 }
 
 object Console {
-  def print(message: String) = {
+  def print(message: Any) = {
     println(message)
   }
 }
