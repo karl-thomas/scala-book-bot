@@ -15,8 +15,11 @@ object BookBot extends App {
     args.foreach(Console.print)
   }
 
-  def parseJson(json: String): Either[io.circe.Error, GoogleResponse] = 
-    decode[GoogleResponse](json)
+  def parseJson(json: String): Either[Error, GoogleResponse] = 
+    decode[GoogleResponse](json) match {
+      case Left(_: io.circe.Error) => Left(TransformError("Could not parse json"))
+      case Right(value: GoogleResponse) => Right(value)
+    }
 
   def takeFirstBook(response: GoogleResponse): Either[TransformError, Volume] =
     response.items.take(1) match {
