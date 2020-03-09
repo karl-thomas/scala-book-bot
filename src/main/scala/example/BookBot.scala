@@ -3,6 +3,7 @@ package example
 import scalaj.http._
 import io.circe._, io.circe.parser._
 import example.models.errors.{Error, HttpError, TransformError}
+import example.models._
 
 object BookBot extends App {
   getISBN("Harry Potter", "Rowling") match {

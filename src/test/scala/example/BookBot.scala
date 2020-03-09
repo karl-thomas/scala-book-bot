@@ -2,6 +2,7 @@ package example
 
 import org.scalatest._
 import io.circe._, io.circe.parser._, io.circe.generic.auto._, io.circe.syntax._
+import example.models._
 
 class BookBotSpec extends FunSpec with Matchers {
   val title = "Harry Potter and the Sorcerer's Stone"
