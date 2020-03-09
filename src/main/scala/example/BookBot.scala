@@ -15,7 +15,7 @@ object BookBot extends App {
     getBook(title, author)
       .flatMap(parseJson)
       .flatMap(takeFirstBook)
-      .flatMap(Book.fromVolume)
+      .flatMap(Book.apply)
       .map(_.isbn)
 
   def parseJson(json: String): Either[Error, GoogleResponse] =
