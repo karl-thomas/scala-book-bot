@@ -11,15 +11,15 @@ class BookSpec extends FunSpec {
     IndustryIdentifier("ISBN_10", isbn10),
     IndustryIdentifier("ISBN_13", isbn13)
   )
-  val book = Volume(VolumeInfo(Some(industryIdentifiers)))
+  val volume = Volume(VolumeInfo(Some(industryIdentifiers)))
 
   it("should return a new instance of a book given a volume") {
-    assert(Book(book) contains Book(isbn10))
+    assert(Book(volume) contains Book(isbn10))
   }
 
-  it("should handle if json object does not container identifier node") {
-    val empty = Volume(VolumeInfo(Some(List())))
-    assert(Book(empty).isLeft)
+  it("should return a Left if the json does not return a identifier node") {
+    val emptyVolume = Volume(VolumeInfo(Some(List())))
+    assert(Book(emptyVolume).isLeft)
   }
 }
 
