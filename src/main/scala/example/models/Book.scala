@@ -5,7 +5,10 @@ import scala.util.{Try, Success, Failure}
 import example.models.errors.{TransformError}
 import example.models._
 
-case class Book(isbn: String)
+case class Book(isbn: String) {
+  def linkToGoodreads: String = s"https://www.goodreads.com/book/isbn/$isbn"
+}
+
 object Book {
   def apply(vol: Volume): Either[TransformError, Book] =
     Some(vol)

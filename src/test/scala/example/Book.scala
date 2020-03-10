@@ -17,9 +17,13 @@ class BookSpec extends FunSpec {
     assert(Book(volume) contains Book(isbn10))
   }
 
-  it("should return a Left if the json does not return a identifier node") {
+  it("should result in a left if the Volume does not return a identifier node") {
     val emptyVolume = Volume(VolumeInfo(Some(List())))
     assert(Book(emptyVolume).isLeft)
+  }
+
+  it("should give you a link to goodreads") {
+    assert(Book(isbn10).linkToGoodreads equals s"https://www.goodreads.com/book/isbn/$isbn10")
   }
 }
 

@@ -22,7 +22,6 @@ object BookBot extends App {
     decode[GoogleResponse](json)
       .left.map(_ => TransformError("Could not parse json"))
 
-
   def takeFirstBook(response: GoogleResponse): Either[TransformError, Volume] =
     response.items.take(1) match {
       case List() => Left(TransformError("No books found in search results"))
