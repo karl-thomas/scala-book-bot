@@ -6,17 +6,21 @@ import example.models.errors.{Error, HttpError, TransformError}
 import example.models._
 
 object BookBot extends App {
-  getISBN("Harry Potter", "Rowling") match {
+  val (title, author) = getTitleAndAuthor(args)
+  
+  getLink(title, author) match {
     case Left(error) => Console.print(error.getMessage)
     case Right(value) => Console.print(value)
   }
 
-  def getISBN(title: String = "", author: String = ""): Either[Error, String] =
+  def getTitleAndAuthor(arg: Array[String]): (String, String) = (arg(0), arg(1))
+
+  def getLink(title: String = "", author: String = ""): Either[Error, String] =
     getBook(title, author)
       .flatMap(parseJson)
       .flatMap(takeFirstBook)
       .flatMap(Book.apply)
-      .map(_.isbn)
+      .map(_.linkToGoodreads)
 
   def parseJson(json: String): Either[Error, GoogleResponse] =
     decode[GoogleResponse](json)

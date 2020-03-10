@@ -8,6 +8,7 @@ import example.models._
 
 class BookBotSpec extends FunSpec with Matchers with MockFactory {
   val title = "Harry Potter and the Sorcerer's Stone"
+  val author = "J.K. Rowling"
   val isbn10 = "0545790352"
   val isbn13 = "0545790352123"
     val industryIdentifiers = List(
@@ -39,10 +40,17 @@ class BookBotSpec extends FunSpec with Matchers with MockFactory {
       }
     }
 
-    describe("getISBN") {
-      it ("returns the isbn for a book title") {
-        val isbn = BookBot.getISBN(title)
-        assert(isbn.getOrElse("") equals isbn10)
+    describe("getTitleAndAuthor") {
+      it("returns the title and author from an array of strings") {
+        val args: Array[String] = Array(title, author)
+        assert(BookBot.getTitleAndAuthor(args) equals (title, author))
+      }
+    }
+
+    describe("getLink") {
+      it ("returns the goodreads link for a book") {
+        val link = BookBot.getLink(title)
+        assert(link.getOrElse("") equals Book(isbn10).linkToGoodreads)
       }
     }
 
