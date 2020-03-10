@@ -3,7 +3,7 @@ Scala Book Bot is a program to help manage a book club channel on slack
 
 ### Dependencies
 
-This project was build using:
+This project was built using:
 
 | dependency | version|
 |---|---|
