@@ -6,13 +6,14 @@ import example.models.errors.{Error, HttpError, TransformError}
 import example.models._
 
 object BookBot extends App {
-  val (title, author) = getTitleAndAuthor(args)
-  
-  getLink(title, author) match {
+
+  run(args) match {
     case Left(error) => Console.print(error.getMessage)
     case Right(value) => Console.print(value)
   }
 
+  def run = (getTitleAndAuthor _) andThen (getLink _ tupled)
+  
   def getTitleAndAuthor(arg: Array[String]): (String, String) = (arg(0), arg(1))
 
   def getLink(title: String = "", author: String = ""): Either[Error, String] =
