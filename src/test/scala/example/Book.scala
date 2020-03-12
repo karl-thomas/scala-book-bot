@@ -2,7 +2,7 @@ package example
 
 import org.scalatest._
 import io.circe._, io.circe.parser._, io.circe.generic.auto._, io.circe.syntax._
-import example.models._
+import models._
 
 class BookSpec extends FunSpec {
   val isbn10: String = "0545790352"

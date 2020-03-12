@@ -1,10 +1,10 @@
 package example
 
 import org.scalatest._
-import io.circe._, io.circe.parser._, io.circe.generic.auto._, io.circe.syntax._
+import io.circe._, io.circe.parser._, io.circe.syntax._
 import org.scalamock.scalatest.MockFactory
 
-import example.models._
+import models._
 
 class BookBotSpec extends FunSpec with Matchers with MockFactory {
   val title = "Harry Potter and the Sorcerer's Stone"
@@ -24,22 +24,6 @@ class BookBotSpec extends FunSpec with Matchers with MockFactory {
   
 
   describe("BookBot") {
-
-    describe("getBook") {
-      describe("when the inner request returns a 200") {
-        it("returns the response body") {
-          assert(BookBot.getBook("harry potter").getOrElse("") contains "Harry")
-        }
-      }
-
-      describe("when the request fails") {
-        // need to figure out http mocking
-        ignore("returns an HttpFailure") {
-
-        }
-      }
-    }
-
     describe("getTitleAndAuthor") {
       it("returns the title and author from an array of strings") {
         val args: Array[String] = Array(title, author)

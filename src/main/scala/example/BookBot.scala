@@ -13,16 +13,18 @@ object BookBot extends App {
   }
 
   def run = (getTitleAndAuthor _) andThen (getLink _ tupled)
-  
-  def getTitleAndAuthor(arg: Array[String]): (String, String) = (arg(0), arg(1))
 
+  def getTitleAndAuthor(arg: Array[String]): (String, String) = (arg(0), arg(1))
+  
   def getLink(title: String = "", author: String = ""): Either[Error, String] =
     getBook(title, author)
       .flatMap(parseJson)
       .flatMap(takeFirstBook)
       .flatMap(Book.apply)
       .map(_.linkToGoodreads)
-
+      
+  def getBook = BookService.get(Http.apply) _
+  
   def parseJson(json: String): Either[Error, GoogleResponse] =
     decode[GoogleResponse](json)
       .left.map(_ => TransformError("Could not parse json"))
@@ -32,18 +34,6 @@ object BookBot extends App {
       case List() => Left(TransformError("No books found in search results"))
       case List(volume) => Right(volume)
     }
-
-  def getBook(title: String = "", author: String = ""): Either[HttpError, String] = {
-    val response: HttpResponse[String] = Http("https://www.googleapis.com/books/v1/volumes")
-      .param("key", sys.env.getOrElse("GOOGLE_API_KEY", ""))
-      .param("q", s"${title}+${author}")
-      .asString
-
-    response.code match {
-      case 200 => Right(response.body)
-      case code => Left(HttpError(s"Search request failed with a $code error code"))
-    }
-  }
 }
 
 object Console {
