@@ -6,13 +6,8 @@ import example.models.errors.{Error, HttpError, TransformError}
 import Error.ErrorOr
 import example.models.{GoogleResponse, Volume, Book}
 
-object BookBot extends App {
+object BookBot {
   type TitleAndAuthor = (String, String)
-  
-  findLinkFrom(args) match {
-    case Left(value) => Console.print(value.getMessage)
-    case Right(value) => Console.print(value)
-  }
 
   def findLinkFrom = getTitleAndAuthor _ andThen getBook andThen getLink
   
