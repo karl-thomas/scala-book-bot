@@ -5,6 +5,7 @@ import io.circe._, io.circe.parser._, io.circe.syntax._
 import org.scalamock.scalatest.MockFactory
 
 import models._
+import example.models.errors.HttpError
 
 class BookBotSpec extends FunSpec with Matchers with MockFactory {
   val title = "Harry Potter and the Sorcerer's Stone"
@@ -33,8 +34,13 @@ class BookBotSpec extends FunSpec with Matchers with MockFactory {
 
     describe("getLink") {
       it ("returns the goodreads link for a book") {
-        val link = BookBot.getLink(title)
+        val link = BookBot.getLink(Right(googleResponseString))
         assert(link.getOrElse("") equals Book(isbn10).linkToGoodreads)
+      }
+
+      it ("fails gracefully when passed a left value") {
+        val link = BookBot.getLink(Left(HttpError("Whoops!")))
+        assert(link.isLeft equals true)
       }
     }
 

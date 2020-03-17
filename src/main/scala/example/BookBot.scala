@@ -3,33 +3,36 @@ package example
 import scalaj.http._
 import io.circe._, io.circe.parser._
 import example.models.errors.{Error, HttpError, TransformError}
-import example.models._
+import Error.ErrorOr
+import example.models.{GoogleResponse, Volume, Book}
 
 object BookBot extends App {
-
-  run(args) match {
-    case Left(error) => Console.print(error.getMessage)
+  type TitleAndAuthor = (String, String)
+  
+  findLinkFrom(args) match {
+    case Left(value) => Console.print(value.getMessage)
     case Right(value) => Console.print(value)
   }
 
-  def run = (getTitleAndAuthor _) andThen (getLink _ tupled)
-
-  def getTitleAndAuthor(arg: Array[String]): (String, String) = (arg(0), arg(1))
+  def findLinkFrom = getTitleAndAuthor _ andThen getBook andThen getLink
   
-  def getLink(title: String = "", author: String = ""): Either[Error, String] =
-    getBook(title, author)
-      .flatMap(parseJson)
-      .flatMap(takeFirstBook)
-      .flatMap(Book.apply)
-      .map(_.linkToGoodreads)
+  def getLink(jsonOrNot: ErrorOr[String]): ErrorOr[String] =
+    jsonOrNot.right
+      .flatMap(json => parseJson(json)
+        .flatMap(takeFirstBook)
+        .flatMap(Book.apply)
+        .map(_.linkToGoodreads)
+      )
       
-  def getBook = BookService.get(Http.apply) _
+  def getTitleAndAuthor(arg: Array[String]): TitleAndAuthor = (arg(0), arg(1))
+
+  def getBook = BookService.get(Http.apply) _ tupled
   
-  def parseJson(json: String): Either[Error, GoogleResponse] =
+  def parseJson(json: String): ErrorOr[GoogleResponse] =
     decode[GoogleResponse](json)
       .left.map(_ => TransformError("Could not parse json"))
 
-  def takeFirstBook(response: GoogleResponse): Either[TransformError, Volume] =
+  def takeFirstBook(response: GoogleResponse): ErrorOr[Volume] =
     response.items.take(1) match {
       case List() => Left(TransformError("No books found in search results"))
       case List(volume) => Right(volume)

@@ -1,7 +1,13 @@
 package example.models.errors
 
+import cats.data.Kleisli
+
 trait Error {
   def getMessage: String
+}
+
+object Error {
+  type ErrorOr[A] = Either[Error, A]
 }
 
 case class TransformError(message: String) extends Error {
