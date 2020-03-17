@@ -1,1 +1,1 @@
-web: target/universal/stage/bin/scala-boot-bot
+web: target/universal/stage/bin/scala-book-bot
