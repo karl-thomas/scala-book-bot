@@ -1,4 +1,4 @@
-package example.models
+package bookbot.models
 import io.circe._, io.circe.generic.semiauto._
 
 case class Volume(volumeInfo: VolumeInfo)

@@ -1,4 +1,4 @@
-package com.example.server
+package bookbot.server
 
 import cats.Applicative
 import cats.implicits._

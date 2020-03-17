@@ -1,9 +1,9 @@
-package example.models
+package bookbot.models
 
 import io.circe._, io.circe.parser._
 import scala.util.{Try, Success, Failure}
-import example.models.errors.{TransformError}
-import example.models._
+import bookbot.models.errors.{TransformError}
+import bookbot.models._
 
 case class Book(isbn: String) {
   def linkToGoodreads: String = s"https://www.goodreads.com/book/isbn/$isbn"

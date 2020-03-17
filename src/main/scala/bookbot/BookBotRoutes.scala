@@ -1,4 +1,4 @@
-package com.example.server
+package bookbot.server
 
 import cats.effect.Sync
 import cats.implicits._

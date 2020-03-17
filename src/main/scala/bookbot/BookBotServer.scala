@@ -1,4 +1,4 @@
-package com.example.server
+package bookbot.server
 
 import cats.effect.{ConcurrentEffect, ContextShift, Timer}
 import cats.implicits._

@@ -1,10 +1,10 @@
-package example
+package bookbot
 
 import org.scalatest._
 import io.circe._, io.circe.parser._, io.circe.generic.auto._, io.circe.syntax._
 import org.scalamock.scalatest.MockFactory
 import models._
-import example.BookService.HttpFunction
+import bookbot.BookService.HttpFunction
 import scalaj.http.{Http,HttpRequest,HttpResponse}
 
 class BookServiceSpec extends FunSpec with Matchers with MockFactory {
