@@ -10,10 +10,9 @@ object BookBotRoutes {
     val dsl = new Http4sDsl[F]{}
     import dsl._
     HttpRoutes.of[F] {
-      case GET -> Root / "hello" / name =>
+      case GET -> Root / "hello"=>
         for {
-          greeting <- H.hello(HelloWorld.Name(name))
-          resp <- Ok(greeting)
+          resp <- Ok("pingback")
         } yield resp
     }
   }
