@@ -1,13 +1,15 @@
 package example
 
 import org.scalatest._
-import io.circe._, io.circe.parser._, io.circe.generic.auto._, io.circe.syntax._
+import io.circe._, io.circe.parser._, io.circe.syntax._
 import org.scalamock.scalatest.MockFactory
 
-import example.models._
+import models._
+import example.models.errors.HttpError
 
 class BookBotSpec extends FunSpec with Matchers with MockFactory {
   val title = "Harry Potter and the Sorcerer's Stone"
+  val author = "J.K. Rowling"
   val isbn10 = "0545790352"
   val isbn13 = "0545790352123"
     val industryIdentifiers = List(
@@ -23,26 +25,22 @@ class BookBotSpec extends FunSpec with Matchers with MockFactory {
   
 
   describe("BookBot") {
-
-    describe("getBook") {
-      describe("when the inner request returns a 200") {
-        it("returns the response body") {
-          assert(BookBot.getBook("harry potter").getOrElse("") contains "Harry")
-        }
-      }
-
-      describe("when the request fails") {
-        // need to figure out http mocking
-        ignore("returns an HttpFailure") {
-
-        }
+    describe("getTitleAndAuthor") {
+      it("returns the title and author from an array of strings") {
+        val args: Array[String] = Array(title, author)
+        assert(BookBot.getTitleAndAuthor(args) equals (title, author))
       }
     }
 
-    describe("getISBN") {
-      it ("returns the isbn for a book title") {
-        val isbn = BookBot.getISBN(title)
-        assert(isbn.getOrElse("") equals isbn10)
+    describe("getLink") {
+      it ("returns the goodreads link for a book") {
+        val link = BookBot.getLink(Right(googleResponseString))
+        assert(link.getOrElse("") equals Book(isbn10).linkToGoodreads)
+      }
+
+      it ("fails gracefully when passed a left value") {
+        val link = BookBot.getLink(Left(HttpError("Whoops!")))
+        assert(link.isLeft equals true)
       }
     }
 
