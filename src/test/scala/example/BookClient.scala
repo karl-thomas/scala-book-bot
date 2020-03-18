@@ -41,7 +41,6 @@ class BookServiceSpec extends FunSpec with Matchers with MockFactory {
       }
 
       describe("when the request fails") {
-        // need to figure out http mocking
         it("with a 400 request code, it returns an HttpFailure") {
           val httpMock = mock[HttpFunction]
           val mockedRequest = mock[HttpRequest]
