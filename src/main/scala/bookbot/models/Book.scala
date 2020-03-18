@@ -5,8 +5,13 @@ import scala.util.{Try, Success, Failure}
 import bookbot.models.errors.{TransformError}
 import bookbot.models._
 
+
+object GoodreadsBook {
+  def link(isbn: String) = s"https://www.goodreads.com/book/isbn/$isbn"
+}
+
 case class Book(isbn: String) {
-  def linkToGoodreads: String = s"https://www.goodreads.com/book/isbn/$isbn"
+  def linkToGoodreads: String = GoodreadsBook.link(isbn)
 }
 
 object Book {
