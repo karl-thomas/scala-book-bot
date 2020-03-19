@@ -35,13 +35,12 @@ class BookServiceSpec extends FunSpec with Matchers with MockFactory {
           (mockedRequest.param _ ).expects("q", "harry potter+").returning(mockedRequest)
           (mockedRequest.asString _ ).expects().returning(response)
           
-          (httpMock.apply _).expects("https://www.googleapis.com/books/v1/volumes").returning(mockedRequest)
+          (httpMock.apply _).expects(sys.env.getOrElse("API_URL", "")).returning(mockedRequest)
           assert(BookService.get(httpMock)("harry potter").getOrElse("") contains "Fake Response!")
         }
       }
 
       describe("when the request fails") {
-        // need to figure out http mocking
         it("with a 400 request code, it returns an HttpFailure") {
           val httpMock = mock[HttpFunction]
           val mockedRequest = mock[HttpRequest]
@@ -50,7 +49,7 @@ class BookServiceSpec extends FunSpec with Matchers with MockFactory {
           (mockedRequest.param _ ).expects("q", *).returning(mockedRequest)
           (mockedRequest.asString _ ).expects().returning(response)
           
-          (httpMock.apply _).expects("https://www.googleapis.com/books/v1/volumes").returning(mockedRequest)
+          (httpMock.apply _).expects(sys.env.getOrElse("API_URL", "")).returning(mockedRequest)
           assert(BookService.get(httpMock)("harry potter").isLeft equals true)
         }
       }

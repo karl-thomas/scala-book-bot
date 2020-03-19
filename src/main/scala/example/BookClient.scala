@@ -9,7 +9,7 @@ object BookService {
   type HttpFunction = String => HttpRequest
 
   def get(http: HttpFunction)(title: String = "", author: String = ""): ErrorOr[String] = {
-    val response: HttpResponse[String] = http("https://www.googleapis.com/books/v1/volumes")
+    val response: HttpResponse[String] = http(sys.env.getOrElse("API_URL", ""))
       .param("key", sys.env.getOrElse("GOOGLE_API_KEY", ""))
       .param("q", s"${title}+${author}")
       .asString
