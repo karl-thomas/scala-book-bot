@@ -15,4 +15,5 @@ jobs:
       - name: Run tests
         env:
           GOOGLE_API_KEY: ${{secrets.GOOGLE_API_KEY}}
+          API_URL: fake url
         run: sbt test
