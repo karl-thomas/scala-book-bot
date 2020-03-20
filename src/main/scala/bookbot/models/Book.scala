@@ -5,7 +5,6 @@ import scala.util.{Try, Success, Failure}
 import bookbot.models.errors.{TransformError}
 import bookbot.models._
 
-
 object GoodreadsBook {
   def link(isbn: String) = s"https://www.goodreads.com/book/isbn/$isbn"
 }

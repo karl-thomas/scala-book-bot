@@ -26,5 +26,3 @@ class BookSpec extends FunSpec {
     assert(Book(isbn10).linkToGoodreads equals s"https://www.goodreads.com/book/isbn/$isbn10")
   }
 }
-
-
