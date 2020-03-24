@@ -1,11 +1,11 @@
-package example
+package bookbot
 
 import org.scalatest._
 import io.circe._, io.circe.parser._, io.circe.syntax._
 import org.scalamock.scalatest.MockFactory
 
 import models._
-import example.models.errors.HttpError
+import bookbot.models.errors.HttpError
 
 class BookBotSpec extends FunSpec with Matchers with MockFactory {
   val title = "Harry Potter and the Sorcerer's Stone"

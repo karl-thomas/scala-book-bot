@@ -1,10 +1,10 @@
-package example
+package bookbot
 
 import scalaj.http._
 import io.circe._, io.circe.parser._
-import example.models.errors.{Error, HttpError, TransformError}
+import bookbot.models.errors.{Error, HttpError, TransformError}
 import Error.ErrorOr
-import example.models.{GoogleResponse, Volume, Book}
+import bookbot.models.{GoogleResponse, Volume, Book}
 
 object BookBot {
   type TitleAndAuthor = (String, String)

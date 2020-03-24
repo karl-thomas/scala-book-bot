@@ -2,8 +2,8 @@ import Dependencies._
 
 ThisBuild / scalaVersion     := "2.12.10"
 ThisBuild / version          := "0.1.0-SNAPSHOT"
-ThisBuild / organization     := "com.example"
-ThisBuild / organizationName := "example"
+ThisBuild / organization     := "com.8thlight"
+ThisBuild / organizationName := "8thlight"
 
 val http4sVersion = "0.21.1"
 val circeVersion = "0.13.0"

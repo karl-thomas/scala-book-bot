@@ -1,7 +1,7 @@
-package example
+package bookbot
 
 import scalaj.http.{HttpRequest, HttpResponse}
-import example.models.errors.HttpError
+import bookbot.models.errors.HttpError
 import scalaj.http.Http
 import models.errors.Error.ErrorOr
 

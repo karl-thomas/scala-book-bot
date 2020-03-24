@@ -1,4 +1,4 @@
-package com.example.server
+package bookbot.server
 
 import cats.effect.{ExitCode, IO, IOApp}
 import cats.implicits._

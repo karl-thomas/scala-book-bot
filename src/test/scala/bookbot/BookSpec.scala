@@ -1,4 +1,4 @@
-package example
+package bookbot
 
 import org.scalatest._
 import io.circe._, io.circe.parser._, io.circe.generic.auto._, io.circe.syntax._
@@ -26,5 +26,3 @@ class BookSpec extends FunSpec {
     assert(Book(isbn10).linkToGoodreads equals s"https://www.goodreads.com/book/isbn/$isbn10")
   }
 }
-
-

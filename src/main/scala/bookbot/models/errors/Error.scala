@@ -1,4 +1,4 @@
-package example.models.errors
+package bookbot.models.errors
 
 import cats.data.Kleisli
 
