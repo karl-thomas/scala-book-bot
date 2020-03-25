@@ -11,7 +11,7 @@ case class TitleAndAuthorParseError(message: String) extends Error {
 object TitleAndAuthor {
   type TitleAndAuthor = (String, String)
 
-  def from(input: String): ErrorOr[TitleAndAuthor] = {
+  def from(input: String): Either[Error, TitleAndAuthor] = {
     val words = input.split("by", 2).map(_.trim).toList
 
     words match {

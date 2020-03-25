@@ -7,9 +7,11 @@ import Error.ErrorOr
 import bookbot.models.{GoogleResponse, Volume, Book}
 import bookbot.models.TitleAndAuthor
 import TitleAndAuthor._
+import cats.syntax.either._
+import cats.implicits._
 
 object BookBot {
-  def findLinkFrom(searchString: String) = TitleAndAuthor.from(searchString).map(getBook andThen getLink)
+  def findLinkFrom(searchString: String) = TitleAndAuthor.from(searchString).flatMap(getBook andThen getLink)
   
   def getLink(jsonOrNot: ErrorOr[String]): ErrorOr[String] =
     jsonOrNot.right

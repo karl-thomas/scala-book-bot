@@ -12,17 +12,21 @@ import org.http4s._
 import org.http4s.circe._
 import org.http4s.dsl._
 import bookbot.models.TitleAndAuthor
+import bookbot.BookBot
 
 
 trait SlackHandler[F[_]]{
   def pingback: F[MessageToSlackChannel]
-  // def findBook(searchString: String): F[MessageToSlackChannel]
+  def findBook(searchString: String): F[MessageToSlackChannel]
 }
 
 object SlackHandler {
   implicit def apply[F[_]](implicit ev: SlackHandler[F]): SlackHandler[F] = ev
   def impl[F[_]: Applicative]: SlackHandler[F] = new SlackHandler[F]{
     def pingback: F[MessageToSlackChannel] = MessageToSlackChannel("pingback").pure[F]
-    // def findBook = TitleAndAuthor. 
+    def findBook(searchString: String) = {
+      val link: String = BookBot.findLinkFrom(searchString).getOrElse("Can not find a book with those details")
+      MessageToSlackChannel(link).pure[F]
+    }
   }
 }
