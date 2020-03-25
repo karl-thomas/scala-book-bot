@@ -5,10 +5,11 @@ import io.circe._, io.circe.parser._
 import bookbot.models.errors.{Error, HttpError, TransformError}
 import Error.ErrorOr
 import bookbot.models.{GoogleResponse, Volume, Book}
-import bookbot.models.TitleAndAuthor._
+import bookbot.models.TitleAndAuthor
+import TitleAndAuthor._
 
 object BookBot {
-  def findLinkFrom = getTitleAndAuthor _ andThen getBook andThen getLink
+  def findLinkFrom(searchString: String) = TitleAndAuthor.from(searchString).map(getBook andThen getLink)
   
   def getLink(jsonOrNot: ErrorOr[String]): ErrorOr[String] =
     jsonOrNot.right
@@ -17,8 +18,6 @@ object BookBot {
         .flatMap(Book.apply)
         .map(_.linkToGoodreads)
       )
-      
-  def getTitleAndAuthor(arg: Array[String]): TitleAndAuthor = (arg(0), arg(1))
 
   def getBook = BookService.get(Http.apply) _ tupled
   

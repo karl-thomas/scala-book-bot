@@ -25,13 +25,6 @@ class BookBotSpec extends FunSpec with Matchers with MockFactory {
   
 
   describe("BookBot") {
-    describe("getTitleAndAuthor") {
-      it("returns the title and author from an array of strings") {
-        val args: Array[String] = Array(title, author)
-        assert(BookBot.getTitleAndAuthor(args) equals (title, author))
-      }
-    }
-
     describe("getLink") {
       it ("returns the goodreads link for a book") {
         val link = BookBot.getLink(Right(googleResponseString))

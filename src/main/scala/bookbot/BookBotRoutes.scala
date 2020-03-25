@@ -18,6 +18,7 @@ object BookBotRoutes {
     HttpRoutes.of[F] {
       case req @ POST -> Root / "hello" =>  
         req.decode[UrlForm](getSlackText _ andThen BotCommand.apply andThen {
+          // case FindBook(search) => Ok(slack.findBook(search))
           case PingBack => Ok(slack.pingback)
           case _ => Ok("I don't know what you mean")
         })

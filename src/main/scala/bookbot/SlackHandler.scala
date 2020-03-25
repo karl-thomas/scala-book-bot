@@ -11,15 +11,18 @@ import cats._, cats.effect._, cats.implicits._, cats.data._
 import org.http4s._
 import org.http4s.circe._
 import org.http4s.dsl._
+import bookbot.models.TitleAndAuthor
 
 
 trait SlackHandler[F[_]]{
   def pingback: F[MessageToSlackChannel]
+  // def findBook(searchString: String): F[MessageToSlackChannel]
 }
 
 object SlackHandler {
   implicit def apply[F[_]](implicit ev: SlackHandler[F]): SlackHandler[F] = ev
   def impl[F[_]: Applicative]: SlackHandler[F] = new SlackHandler[F]{
     def pingback: F[MessageToSlackChannel] = MessageToSlackChannel("pingback").pure[F]
+    // def findBook = TitleAndAuthor. 
   }
 }
