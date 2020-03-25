@@ -13,15 +13,13 @@ import org.http4s.circe._
 import org.http4s.dsl._
 
 
-trait PingHandler[F[_]]{
+trait SlackHandler[F[_]]{
   def pingback: F[MessageToSlackChannel]
 }
 
-object PingHandler {
-  implicit def apply[F[_]](implicit ev: PingHandler[F]): PingHandler[F] = ev
-  def impl[F[_]: Applicative]: PingHandler[F] = new PingHandler[F]{
-    def pingback: F[MessageToSlackChannel] = {
-      MessageToSlackChannel("pingback").pure[F]
-    }
+object SlackHandler {
+  implicit def apply[F[_]](implicit ev: SlackHandler[F]): SlackHandler[F] = ev
+  def impl[F[_]: Applicative]: SlackHandler[F] = new SlackHandler[F]{
+    def pingback: F[MessageToSlackChannel] = MessageToSlackChannel("pingback").pure[F]
   }
 }

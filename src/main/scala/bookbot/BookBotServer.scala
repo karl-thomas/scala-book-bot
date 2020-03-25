@@ -14,13 +14,13 @@ object BookBotServer {
   def stream[F[_]: ConcurrentEffect](implicit T: Timer[F], C: ContextShift[F]): Stream[F, Nothing] = {
     for {
       client <- BlazeClientBuilder[F](global).stream
-      pingHandler = PingHandler.impl[F]
+      slackHandler = SlackHandler.impl[F]
 
       // Combine Service Routes into an HttpApp.
       // Can also be done via a Router if you
       // want to extract a segments not checked
       // in the underlying routes.
-      httpApp = (BookBotRoutes.pingRoutes[F](pingHandler)).orNotFound
+      httpApp = (BookBotRoutes.slackRoutes[F](slackHandler)).orNotFound
 
       // With Middlewares in place
       finalHttpApp = Logger.httpApp(true, true)(httpApp)
