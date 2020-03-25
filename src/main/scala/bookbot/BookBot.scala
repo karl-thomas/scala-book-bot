@@ -5,10 +5,9 @@ import io.circe._, io.circe.parser._
 import bookbot.models.errors.{Error, HttpError, TransformError}
 import Error.ErrorOr
 import bookbot.models.{GoogleResponse, Volume, Book}
+import bookbot.models.TitleAndAuthor._
 
 object BookBot {
-  type TitleAndAuthor = (String, String)
-
   def findLinkFrom = getTitleAndAuthor _ andThen getBook andThen getLink
   
   def getLink(jsonOrNot: ErrorOr[String]): ErrorOr[String] =

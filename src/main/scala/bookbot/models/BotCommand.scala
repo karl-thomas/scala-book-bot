@@ -1,12 +1,16 @@
 package bookbot.models
 
+import bookbot.models.errors.Error
+import bookbot.models.errors.Error._
+import TitleAndAuthor._
+
 sealed trait BotCommand
 sealed trait ValidCommand extends BotCommand {
   def keyword: String
 }
 
 object BotCommand {
-  case class FindBook(message: String) extends ValidCommand {
+  case class FindBook(searchString: String) extends ValidCommand {
     val keyword = FindBook.keyword
   }
   object FindBook {
@@ -15,15 +19,15 @@ object BotCommand {
   case object PingBack extends ValidCommand {
     val keyword = "ping"
   }
+  case class PrintError(error: Error) extends BotCommand
   case object Default extends BotCommand
-
-  def fromRawMessage(message: String): BotCommand = {
-    val words = message.trim.split(" ")
-    words.lift(0) match {
-      case Some(PingBack.keyword) => PingBack
-      case Some(FindBook.keyword) => FindBook(words.lift(0).get)
+  
+  def apply(message: String): BotCommand = {
+    val words = message.trim.split(" ", 2).toList
+    words match {
+      case PingBack.keyword :: _ => PingBack
+      case FindBook.keyword :: searchString :: _ => FindBook(searchString)
       case _ => Default
     }
   }
-
 }
