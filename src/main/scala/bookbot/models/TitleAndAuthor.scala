@@ -8,10 +8,12 @@ case class TitleAndAuthorParseError(message: String) extends Error {
   def getMessage = message
 }
 
+// case class SearchDetails(title: Option[String] = "", author: Option[String] = "", genericSearch: Option[String] = "")
+
 object TitleAndAuthor {
   type TitleAndAuthor = (String, String)
 
-  def from(input: String): Either[Error, TitleAndAuthor] = {
+  def from(input: String): Either[TitleAndAuthorParseError, TitleAndAuthor] = {
     val words = input.split("by", 2).map(_.trim).toList
 
     words match {
@@ -22,5 +24,5 @@ object TitleAndAuthor {
     } 
   }
 
-  private def noWordsIn(list: List[String]) = !list.exists(!_.isEmpty())
+  private def noWordsIn(list: List[String]) = list.forall(_.isEmpty())
 }
