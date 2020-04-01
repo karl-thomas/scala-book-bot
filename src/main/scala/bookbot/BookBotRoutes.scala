@@ -4,16 +4,24 @@ import cats.effect.Sync
 import cats.implicits._
 import org.http4s.HttpRoutes
 import org.http4s.dsl.Http4sDsl
+import org.http4s.UrlForm
+import cats.data.Chain
+import bookbot.models.BotCommand
+import BotCommand._
 
 object BookBotRoutes {
-  def pingRoutes[F[_]: Sync](ping: PingHandler[F]): HttpRoutes[F] = {
+  def getSlackText(form: UrlForm): String = form.get("text").get(0).getOrElse("")
+
+  def slackRoutes[F[_]: Sync](slack: SlackHandler[F]): HttpRoutes[F] = {
     val dsl = new Http4sDsl[F]{}
     import dsl._
     HttpRoutes.of[F] {
-      case POST -> Root / "hello" =>
-        for {
-          resp <- Ok(ping.pingback)
-        } yield resp
+      case req @ POST -> Root / "hello" =>  
+        req.decode[UrlForm](getSlackText _ andThen BotCommand.apply andThen {
+          case FindBook(search) => Ok(slack.findBook(search))
+          case PingBack => Ok(slack.pingback)
+          case NoCommandFound => Ok(NoCommandFound.message)
+        })
     }
   }
 }
