@@ -20,7 +20,7 @@ object BotCommand {
     val keyword = "ping"
   }
   case object NoCommandFound extends BotCommand {
-    val message = "Hey there! 📎 \n The valid commands are:\n\"/bookclubbot ping\" - The bot will say pingback to you!\n\"/bookclubbot find *booktitle* by *authorname*\" - Get a link to a books page on goodreads!"
+    val message = "Hey there! 📎 \n The valid commands are:\n\n   _/bookclubbot ping_ - The bot will say pingback to you!\n\n   _/bookclubbot find *booktitle* by *authorname*_ - Get a link to a books page on goodreads!"
   }
 
   def apply(message: String): BotCommand = {
