@@ -12,7 +12,6 @@ import cats.implicits._
 
 object BookBot {
   def findLinkFrom(searchString: String) = TitleAndAuthor.from(searchString).flatMap(getBook andThen getLink)
-  
   def getLink(jsonOrNot: ErrorOr[String]): ErrorOr[String] =
     jsonOrNot.right
       .flatMap(json => parseJson(json)

@@ -3,9 +3,7 @@ package bookbot
 import org.scalatest._
 import io.circe._, io.circe.parser._, io.circe.generic.auto._, io.circe.syntax._
 import models._
-import bookbot.models.BotCommand.PingBack
-import bookbot.models.BotCommand.Default
-import bookbot.models.BotCommand.FindBook
+import bookbot.models.BotCommand._
 
 class BotCommandSpec extends FunSpec with Matchers {
   describe("BotCommand") {
@@ -21,8 +19,8 @@ class BotCommandSpec extends FunSpec with Matchers {
       }
     }
 
-    it("should return Default if no command is found") {
-      BotCommand("Whoops! All! Expletives!").shouldBe(Default)
+    it("should return a default if no command can be found") {
+      BotCommand("Whoops! All! Expletives!").shouldBe(NoCommandFound)
     }
   }
 }

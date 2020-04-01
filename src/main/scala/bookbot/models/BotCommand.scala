@@ -19,15 +19,16 @@ object BotCommand {
   case object PingBack extends ValidCommand {
     val keyword = "ping"
   }
-  case class PrintError(error: Error) extends BotCommand
-  case object Default extends BotCommand
-  
+  case object NoCommandFound extends BotCommand {
+    val message = "Hey there! 📎 \n The valid commands are:\n\"/bookclubbot ping\" - The bot will say pingback to you!\n\"/bookclubbot find *booktitle* by *authorname*\" - Get a link to a books page on goodreads!"
+  }
+
   def apply(message: String): BotCommand = {
     val words = message.trim.split(" ", 2).toList
     words match {
       case PingBack.keyword :: _ => PingBack
       case FindBook.keyword :: searchString :: _ => FindBook(searchString)
-      case _ => Default
+      case _ => NoCommandFound
     }
   }
 }

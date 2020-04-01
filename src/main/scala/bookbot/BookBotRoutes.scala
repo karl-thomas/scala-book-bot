@@ -20,7 +20,7 @@ object BookBotRoutes {
         req.decode[UrlForm](getSlackText _ andThen BotCommand.apply andThen {
           case FindBook(search) => Ok(slack.findBook(search))
           case PingBack => Ok(slack.pingback)
-          case _ => Ok("I don't know what you mean")
+          case NoCommandFound => Ok(NoCommandFound.message)
         })
     }
   }
